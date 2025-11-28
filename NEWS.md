@@ -1,3 +1,8 @@
+cppRouting v3.2
+===============
+
+- update DESCRIPTION file : remove c++11 specification and add Authors@R field
+
 cppRouting v3.1
 ===============
 

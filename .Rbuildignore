@@ -1,0 +1,8 @@
+^.*\.Rproj$
+^.*\.Rhistory$
+^\.Rproj\.user$
+^data_readme/
+^README\.md$
+^README_files/
+^\.git$
+^\.gitignore$
