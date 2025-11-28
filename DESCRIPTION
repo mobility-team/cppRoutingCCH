@@ -6,7 +6,7 @@ Date: 2025-11-28
 Authors@R: person(given = "Vincent",family = "Larmet",role = c("aut", "cre"),email = "larmet.vincent@gmail.com")
 Description: Calculation of distances, shortest paths and isochrones on weighted graphs using several variants of Dijkstra algorithm.
     Proposed algorithms are unidirectional Dijkstra (Dijkstra, E. W. (1959) <doi:10.1007/BF01386390>),
-    bidirectional Dijkstra (Goldberg, Andrew & Fonseca F. Werneck, Renato (2005) <https://archive.siam.org/meetings/alenex05/papers/03agoldberg.pdf>),
+    bidirectional Dijkstra (Goldberg, Andrew & Fonseca F. Werneck, Renato (2005) <https://www.cs.princeton.edu/courses/archive/spr06/cos423/Handouts/EPP%20shortest%20path%20algorithms.pdf>),
     A* search (P. E. Hart, N. J. Nilsson et B. Raphael (1968) <doi:10.1109/TSSC.1968.300136>),
     new bidirectional A* (Pijls & Post (2009) <https://repub.eur.nl/pub/16100/ei2009-10.pdf>),
     Contraction hierarchies (R. Geisberger, P. Sanders, D. Schultes and D. Delling (2008) <doi:10.1007/978-3-540-68552-4_24>),

@@ -158,7 +158,7 @@ Rcpp::List cpppathmat(std::vector<int> &gfrom, std::vector<int> &gto, std::vecto
 }
 
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cppsimplify(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw, int nb,
@@ -172,7 +172,7 @@ Rcpp::List cppsimplify(std::vector<int> &gfrom, std::vector<int> &gto, std::vect
   return res;
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cppcontract(std::vector<int> &gfrom,std::vector<int> &gto,std::vector<double> &gw,int NbNodes,bool display_progress){
@@ -193,7 +193,7 @@ Rcpp::List cppcontract(std::vector<int> &gfrom,std::vector<int> &gto,std::vector
 }
 
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::NumericVector cppdistC(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw, int nb,
@@ -210,7 +210,7 @@ Rcpp::NumericVector cppdistC(std::vector<int> &gfrom, std::vector<int> &gto, std
   return result;
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cpppathC(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw, int nb,
@@ -227,7 +227,7 @@ Rcpp::List cpppathC(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<
   return Rcpp::wrap(network.routing_svec(dep, arr, keep, algo));
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::NumericMatrix cppdistmatC(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw, int nb,
@@ -243,7 +243,7 @@ Rcpp::NumericMatrix cppdistmatC(std::vector<int> &gfrom, std::vector<int> &gto, 
 }
 
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cpppathmatC(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw, int nb,
@@ -277,7 +277,7 @@ Rcpp::List cpppathmatC(std::vector<int> &gfrom, std::vector<int> &gto, std::vect
   return result;
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 Rcpp::NumericMatrix cpppadd(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw, std::vector<double> &gadd, int nb,
             std::vector<int> dep, std::vector<int> arr){
@@ -288,7 +288,7 @@ Rcpp::NumericMatrix cpppadd(std::vector<int> &gfrom, std::vector<int> &gto, std:
 }
 
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::NumericVector cppdistadd(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw, std::vector<double> &gadd,int nb,
@@ -309,7 +309,7 @@ Rcpp::NumericVector cppdistadd(std::vector<int> &gfrom, std::vector<int> &gto, s
 }
 
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::NumericVector cppdistaddC(std::vector<int> &orfrom, std::vector<int> &orto, std::vector<double> &orw, std::vector<double> &gadd,
@@ -336,7 +336,7 @@ Rcpp::NumericVector cppdistaddC(std::vector<int> &orfrom, std::vector<int> &orto
   return result;
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::NumericMatrix cppaddC(std::vector<int> &orfrom, std::vector<int> &orto, std::vector<double> &orw, std::vector<double> &gadd,
@@ -363,7 +363,7 @@ Rcpp::NumericMatrix cppaddC(std::vector<int> &orfrom, std::vector<int> &orto, st
   return result;
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cppaon(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw,int nb,
@@ -403,7 +403,7 @@ Rcpp::List cppaon(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<do
   return final;
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cppaonC(std::vector<int> &orfrom, std::vector<int> &orto, std::vector<double> &orw,
@@ -448,7 +448,7 @@ Rcpp::List cppaonC(std::vector<int> &orfrom, std::vector<int> &orto, std::vector
   return result;
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cpptraffic(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw,
@@ -480,7 +480,7 @@ Rcpp::List cpptraffic(std::vector<int> &gfrom, std::vector<int> &gto, std::vecto
 
 }
 
-// [[Rcpp::plugins(cpp11)]]
+
 // [[Rcpp::export]]
 
 Rcpp::List cppalgB(std::vector<int> &gfrom, std::vector<int> &gto, std::vector<double> &gw,

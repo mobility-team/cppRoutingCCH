@@ -25,7 +25,7 @@ using VVec = vector<SVec >;
 using VIVec = vector<IVec >;
 
 // [[Rcpp::depends(RcppParallel)]]
-// [[Rcpp::plugins(cpp11)]]
+
 
 
 

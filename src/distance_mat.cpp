@@ -1,5 +1,5 @@
 // [[Rcpp::depends(RcppParallel)]]
-// [[Rcpp::plugins(cpp11)]]
+
 
 #include <vector>
 #include <Rcpp.h>
