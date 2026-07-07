@@ -59,6 +59,23 @@ get_distance_matrix<-function(Graph, from, to, algorithm="phast", aggregate_aux 
 
   if (allcores) message("allcores argument is deprecated since v3.0. \nPlease use RcppParallel::setThreadOptions() to set the number of threads")
 
+  if (inherits(Graph, "cppRouting_cch")) stop("Run cpp_cch_customize() before querying a CCH")
+
+  if (inherits(Graph, "cppRouting_cch_metric")){
+    if (aggregate_aux) stop("aggregate_aux is not supported for CCH metrics")
+    res <- cppdistmatcch(Graph$nbnode,
+                         Graph$first_out,
+                         Graph$adj_head,
+                         Graph$adj_arc,
+                         Graph$weight$forward,
+                         Graph$weight$backward,
+                         from_id,
+                         to_id)
+    rownames(res)<-from
+    colnames(res)<-to
+    return(res)
+  }
+
 
   # not contracted
   if (length(Graph) == 5){

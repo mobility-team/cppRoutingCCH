@@ -11,9 +11,10 @@ Vincent LARMET
 November 24, 2022
 
 -   [Package presentation](#package-presentation)
+-   [About this fork](#about-this-fork)
 -   [Installation](#installation)
     -   [Stable version from CRAN](#stable-version-from-cran)
-    -   [or from github](#or-from-github)
+    -   [CCH fork from GitHub](#cch-fork-from-github)
 -   [What are we talking about ?](#what-are-we-talking-about-)
 -   [Readme Data](#readme-data)
     -   [Set the number of threads used by
@@ -26,6 +27,7 @@ November 24, 2022
     -   [Compute possible detours within a fixed additional
         cost](#compute-possible-detours-within-a-fixed-additional-cost)
     -   [Contraction hierarchies](#contraction-hierarchies)
+    -   [Customizable contraction hierarchies](#customizable-contraction-hierarchies)
     -   [Work with dual weighted
         network](#work-with-dual-weighted-network)
 -   [Network simplification](#network-simplification)
@@ -77,6 +79,32 @@ All algorithms are written in C++ and mainly use containers from the
 Standard Template Library (STL).  
 This package have been made with `Rcpp` and `RcppParallel` packages.
 
+# About this fork
+
+This repository is a Mobility-oriented fork of
+[`vlarmet/cppRouting`](https://github.com/vlarmet/cppRouting). It keeps
+the original R package name, `cppRouting`, and adds a customizable
+contraction hierarchy (CCH) backend for workflows where the road topology
+is stable but edge costs change repeatedly.
+
+The main additions are:
+
+-   `cpp_cch_prepare()` to prepare reusable CCH topology from a
+    `makegraph()` graph.
+-   `cpp_cch_customize()` to update that topology with the current edge
+    weights.
+-   CCH support in `get_distance_pair()`, `get_distance_matrix()` and
+    `get_aon()` after customization.
+-   `get_path_values_pair()` to route on one cost and accumulate one or
+    more edge-value columns, such as distance, along the selected paths.
+-   `assign_traffic(..., aon_method = "cch", cch = cch)` for
+    congestion assignment where CCH preparation can be reused across many
+    model iterations.
+
+The CCH path is especially useful for transport models that update
+travel times many times on the same graph, for example iterative traffic
+assignment.
+
 # Installation
 
 ### Stable version from CRAN
@@ -85,12 +113,15 @@ This package have been made with `Rcpp` and `RcppParallel` packages.
 install.packages("cppRouting")
 ```
 
-### or from github
+### CCH fork from GitHub
 
 ``` r
 library(remotes)
-remotes::install_github("vlarmet/cppRouting")
+remotes::install_github("mobility-team/cppRoutingCCH")
 ```
+
+Once the fork is published on R-universe, it can also be installed from
+the Mobility R-universe repository.
 
 # What are we talking about ?
 
@@ -232,6 +263,12 @@ All graph attributes should **never** be modified by the user.
     to very large graphs (several millions of nodes).  
 -   `cpp_contract` : contract the graph by applying **contraction
     hierarchies** algorithm.  
+-   `cpp_cch_prepare` : prepare reusable **customizable contraction
+    hierarchy** topology.  
+-   `cpp_cch_customize` : update a prepared CCH with current edge
+    weights.  
+-   `get_path_values_pair` : compute CCH shortest paths and accumulate
+    one or more edge-value columns along those paths.  
 -   `get_aon` : given an origin-destination matrix, compute
     All-or-Nothing assignment.  
 -   `assign_traffic` : given an origin-destination matrix, estimate the
@@ -1168,6 +1205,65 @@ size. For example, if we have to calculate a distance matrix between
 10000 sources and 10 targets (or 10 sources and 10000 targets) on OSM
 France, we must use *PHAST*. On the other hand, if we want a matrix of
 10000 sources and 8000 targets, we use *many to many CH* algorithm.
+
+## Customizable contraction hierarchies
+
+Customizable contraction hierarchies (CCH) split the speed-up into two
+steps:
+
+-   preparation, which depends only on graph topology;
+-   customization, which applies the current edge weights.
+
+This is useful when edge costs change repeatedly on the same graph, for
+example during congestion assignment. The expensive topology preparation
+can be done once and reused.
+
+``` r
+edges <- data.frame(
+  from = c("a", "b", "a"),
+  to = c("b", "c", "c"),
+  time = c(1, 2, 5),
+  distance = c(10, 20, 30)
+)
+
+graph <- makegraph(edges[, c("from", "to", "time")], directed = TRUE)
+
+# Prepare once for this graph topology.
+cch <- cpp_cch_prepare(graph)
+
+# Customize with the current edge weights, then query.
+metric <- cpp_cch_customize(cch, weights = graph$data$dist)
+get_distance_pair(metric, from = "a", to = "c")
+
+# Route on time and accumulate distance along the selected path.
+get_path_values_pair(
+  metric,
+  from = "a",
+  to = "c",
+  values = data.frame(distance = edges$distance)
+)
+```
+
+For traffic assignment, pass the prepared topology to avoid rebuilding a
+contraction hierarchy at every cost update:
+
+``` r
+trips <- data.frame(
+  from = c("a", "a"),
+  to = c("c", "b"),
+  demand = c(100, 50)
+)
+
+traffic <- assign_traffic(
+  Graph = graph,
+  from = trips$from,
+  to = trips$to,
+  demand = trips$demand,
+  algorithm = "cfw",
+  aon_method = "cch",
+  cch = cch
+)
+```
 
 ## Work with dual weighted network
 

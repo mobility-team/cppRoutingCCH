@@ -1,8 +1,8 @@
 Package: cppRouting
 Type: Package
 Title: Algorithms for Routing and Solving the Traffic Assignment Problem
-Version: 3.2
-Date: 2025-11-28
+Version: 3.2.1
+Date: 2026-07-07
 Authors@R: person(given = "Vincent",family = "Larmet",role = c("aut", "cre"),email = "larmet.vincent@gmail.com")
 Description: Calculation of distances, shortest paths and isochrones on weighted graphs using several variants of Dijkstra algorithm.
     Proposed algorithms are unidirectional Dijkstra (Dijkstra, E. W. (1959) <doi:10.1007/BF01386390>),
@@ -10,7 +10,8 @@ Description: Calculation of distances, shortest paths and isochrones on weighted
     A* search (P. E. Hart, N. J. Nilsson et B. Raphael (1968) <doi:10.1109/TSSC.1968.300136>),
     new bidirectional A* (Pijls & Post (2009) <https://repub.eur.nl/pub/16100/ei2009-10.pdf>),
     Contraction hierarchies (R. Geisberger, P. Sanders, D. Schultes and D. Delling (2008) <doi:10.1007/978-3-540-68552-4_24>),
-    PHAST (D. Delling, A.Goldberg, A. Nowatzyk, R. Werneck (2011) <doi:10.1016/j.jpdc.2012.02.007>).
+    PHAST (D. Delling, A.Goldberg, A. Nowatzyk, R. Werneck (2011) <doi:10.1016/j.jpdc.2012.02.007>),
+    and customizable contraction hierarchies for repeated edge-cost updates on stable graph topologies.
     Algorithms for solving the traffic assignment problem are All-or-Nothing assignment,
     Method of Successive Averages,
     Frank-Wolfe algorithm (M. Fukushima (1984) <doi:10.1016/0191-2615(84)90029-8>),
@@ -23,7 +24,7 @@ Imports: Rcpp (>= 1.0.7), RcppParallel, RcppProgress, data.table
 LinkingTo: Rcpp, RcppParallel, RcppProgress
 SystemRequirements: GNU make
 RoxygenNote: 7.2.1
-URL: https://github.com/vlarmet/cppRouting
+URL: https://github.com/mobility-team/cppRoutingCCH
 Suggests: knitr, rmarkdown, igraph
 VignetteBuilder: knitr
 NeedsCompilation: yes

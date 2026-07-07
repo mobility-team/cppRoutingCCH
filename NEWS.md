@@ -1,3 +1,13 @@
+cppRouting v3.2.1
+=================
+
+- Mobility fork release with customizable contraction hierarchy (CCH)
+  preparation and customization.
+- Add CCH-backed distance, matrix, all-or-nothing assignment, and traffic
+  assignment paths for repeated edge-cost updates.
+- Add `get_path_values_pair()` to route on one cost and accumulate edge
+  value columns along the selected CCH shortest paths.
+
 cppRouting v3.2
 ===============
 

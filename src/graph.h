@@ -24,6 +24,8 @@ using SVec = vector<string>;
 using VVec = vector<SVec >;
 using VIVec = vector<IVec >;
 
+struct CCHPrepared;
+
 // [[Rcpp::depends(RcppParallel)]]
 
 
@@ -133,7 +135,8 @@ public:
 
   void assign_traffic(int method, double max_gap, int max_iter,
                       IVec dep, IVec arr, DVec dem, int mode,
-                      bool contract, bool phast, bool verbose);
+                      bool contract, bool phast, bool verbose,
+                      CCHPrepared* prepared_cch = NULL);
 
   void algorithmB(int batch_size, int n_batch, string file_path, double max_gap, int max_iter,
                          IVec dep, IVec arr, DVec dem, int mode, int inner_iter, double NUM_TOL,
