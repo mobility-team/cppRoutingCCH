@@ -3,9 +3,8 @@
 `cppRoutingCCH` is a Mobility-oriented fork of
 [`vlarmet/cppRouting`](https://github.com/vlarmet/cppRouting).
 
-The R package name remains `cppRouting`, so it can be used as a drop-in
-dependency where Mobility needs the original cppRouting API plus the CCH
-extensions described below.
+The R package name is `cppRoutingCCH`. It keeps the original cppRouting API plus
+the CCH extensions described below.
 
 For the full upstream package presentation, examples, and original routing
 documentation, see the original cppRouting README:
@@ -45,7 +44,7 @@ Mobility R-universe repository before falling back to CRAN.
 ## Basic CCH Usage
 
 ```r
-library(cppRouting)
+library(cppRoutingCCH)
 
 edges <- data.frame(
   from = c("a", "b", "a"),
@@ -97,7 +96,7 @@ traffic <- assign_traffic(
 
 ## Versioning
 
-This fork currently publishes `cppRouting` version `3.2.1`, based on upstream
+This fork currently publishes `cppRoutingCCH` version `3.2.1`, based on upstream
 cppRouting `3.2` plus the CCH additions.
 
 ## License

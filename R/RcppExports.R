@@ -2,102 +2,102 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 cppdist <- function(gfrom, gto, gw, nb, lat, lon, k, dep, arr, algo) {
-    .Call(`_cppRouting_cppdist`, gfrom, gto, gw, nb, lat, lon, k, dep, arr, algo)
+    .Call(`_cppRoutingCCH_cppdist`, gfrom, gto, gw, nb, lat, lon, k, dep, arr, algo)
 }
 
 cpppath <- function(gfrom, gto, gw, nb, lat, lon, k, dict, keep, dep, arr, lim, algo) {
-    .Call(`_cppRouting_cpppath`, gfrom, gto, gw, nb, lat, lon, k, dict, keep, dep, arr, lim, algo)
+    .Call(`_cppRoutingCCH_cpppath`, gfrom, gto, gw, nb, lat, lon, k, dict, keep, dep, arr, lim, algo)
 }
 
 cppdistmat <- function(gfrom, gto, gw, nb, dep, arr) {
-    .Call(`_cppRouting_cppdistmat`, gfrom, gto, gw, nb, dep, arr)
+    .Call(`_cppRoutingCCH_cppdistmat`, gfrom, gto, gw, nb, dep, arr)
 }
 
 cpppathmat <- function(gfrom, gto, gw, nb, dict, keep, dep, arr, lim, setdif, algo, reverse) {
-    .Call(`_cppRouting_cpppathmat`, gfrom, gto, gw, nb, dict, keep, dep, arr, lim, setdif, algo, reverse)
+    .Call(`_cppRoutingCCH_cpppathmat`, gfrom, gto, gw, nb, dict, keep, dep, arr, lim, setdif, algo, reverse)
 }
 
 cppsimplify <- function(gfrom, gto, gw, nb, keep, rm_loop, iterate, progress) {
-    .Call(`_cppRouting_cppsimplify`, gfrom, gto, gw, nb, keep, rm_loop, iterate, progress)
+    .Call(`_cppRoutingCCH_cppsimplify`, gfrom, gto, gw, nb, keep, rm_loop, iterate, progress)
 }
 
 cppcontract <- function(gfrom, gto, gw, NbNodes, display_progress) {
-    .Call(`_cppRouting_cppcontract`, gfrom, gto, gw, NbNodes, display_progress)
+    .Call(`_cppRoutingCCH_cppcontract`, gfrom, gto, gw, NbNodes, display_progress)
 }
 
 cppcchprepare <- function(gfrom, gto, NbNodes, order) {
-    .Call(`_cppRouting_cppcchprepare`, gfrom, gto, NbNodes, order)
+    .Call(`_cppRoutingCCH_cppcchprepare`, gfrom, gto, NbNodes, order)
 }
 
 cppcchcustomize <- function(gfrom, gto, gw, NbNodes, rank, tail, head, rank_first_out, rank_adj_head, rank_adj_arc, input_arc, input_forward) {
-    .Call(`_cppRouting_cppcchcustomize`, gfrom, gto, gw, NbNodes, rank, tail, head, rank_first_out, rank_adj_head, rank_adj_arc, input_arc, input_forward)
+    .Call(`_cppRoutingCCH_cppcchcustomize`, gfrom, gto, gw, NbNodes, rank, tail, head, rank_first_out, rank_adj_head, rank_adj_arc, input_arc, input_forward)
 }
 
 cppdistcch <- function(NbNodes, first_out, adj_head, adj_arc, forward, backward, dep, arr) {
-    .Call(`_cppRouting_cppdistcch`, NbNodes, first_out, adj_head, adj_arc, forward, backward, dep, arr)
+    .Call(`_cppRoutingCCH_cppdistcch`, NbNodes, first_out, adj_head, adj_arc, forward, backward, dep, arr)
 }
 
 cppdistmatcch <- function(NbNodes, first_out, adj_head, adj_arc, forward, backward, dep, arr) {
-    .Call(`_cppRouting_cppdistmatcch`, NbNodes, first_out, adj_head, adj_arc, forward, backward, dep, arr)
+    .Call(`_cppRoutingCCH_cppdistmatcch`, NbNodes, first_out, adj_head, adj_arc, forward, backward, dep, arr)
 }
 
 cpppathvaluescch <- function(gfrom, NbNodes, rank, first_out, adj_head, adj_arc, elimination_tree_parent, forward, backward, forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original, backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original, dep, arr, values) {
-    .Call(`_cppRouting_cpppathvaluescch`, gfrom, NbNodes, rank, first_out, adj_head, adj_arc, elimination_tree_parent, forward, backward, forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original, backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original, dep, arr, values)
+    .Call(`_cppRoutingCCH_cpppathvaluescch`, gfrom, NbNodes, rank, first_out, adj_head, adj_arc, elimination_tree_parent, forward, backward, forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original, backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original, dep, arr, values)
 }
 
 cppaoncchelim <- function(gfrom, gto, gw, NbNodes, rank, first_out, adj_head, adj_arc, elimination_tree_parent, forward, backward, forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original, backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original, dep, arr, dem) {
-    .Call(`_cppRouting_cppaoncchelim`, gfrom, gto, gw, NbNodes, rank, first_out, adj_head, adj_arc, elimination_tree_parent, forward, backward, forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original, backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original, dep, arr, dem)
+    .Call(`_cppRoutingCCH_cppaoncchelim`, gfrom, gto, gw, NbNodes, rank, first_out, adj_head, adj_arc, elimination_tree_parent, forward, backward, forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original, backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original, dep, arr, dem)
 }
 
 cppdistC <- function(gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo) {
-    .Call(`_cppRouting_cppdistC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
+    .Call(`_cppRoutingCCH_cppdistC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
 }
 
 cpppathC <- function(gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dict, keep, dep, arr, algo) {
-    .Call(`_cppRouting_cpppathC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dict, keep, dep, arr, algo)
+    .Call(`_cppRoutingCCH_cpppathC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dict, keep, dep, arr, algo)
 }
 
 cppdistmatC <- function(gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo) {
-    .Call(`_cppRouting_cppdistmatC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
+    .Call(`_cppRoutingCCH_cppdistmatC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
 }
 
 cpppathmatC <- function(gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dict, keep, dep, arr) {
-    .Call(`_cppRouting_cpppathmatC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dict, keep, dep, arr)
+    .Call(`_cppRoutingCCH_cpppathmatC`, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dict, keep, dep, arr)
 }
 
 cpppadd <- function(gfrom, gto, gw, gadd, nb, dep, arr) {
-    .Call(`_cppRouting_cpppadd`, gfrom, gto, gw, gadd, nb, dep, arr)
+    .Call(`_cppRoutingCCH_cpppadd`, gfrom, gto, gw, gadd, nb, dep, arr)
 }
 
 cppdistadd <- function(gfrom, gto, gw, gadd, nb, lat, lon, k, dep, arr, algo) {
-    .Call(`_cppRouting_cppdistadd`, gfrom, gto, gw, gadd, nb, lat, lon, k, dep, arr, algo)
+    .Call(`_cppRoutingCCH_cppdistadd`, gfrom, gto, gw, gadd, nb, lat, lon, k, dep, arr, algo)
 }
 
 cppdistaddC <- function(orfrom, orto, orw, gadd, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo) {
-    .Call(`_cppRouting_cppdistaddC`, orfrom, orto, orw, gadd, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
+    .Call(`_cppRoutingCCH_cppdistaddC`, orfrom, orto, orw, gadd, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
 }
 
 cppaddC <- function(orfrom, orto, orw, gadd, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo) {
-    .Call(`_cppRouting_cppaddC`, orfrom, orto, orw, gadd, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
+    .Call(`_cppRoutingCCH_cppaddC`, orfrom, orto, orw, gadd, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, algo)
 }
 
 cppaon <- function(gfrom, gto, gw, nb, lat, lon, k, dep, arr, dem, algo) {
-    .Call(`_cppRouting_cppaon`, gfrom, gto, gw, nb, lat, lon, k, dep, arr, dem, algo)
+    .Call(`_cppRoutingCCH_cppaon`, gfrom, gto, gw, nb, lat, lon, k, dep, arr, dem, algo)
 }
 
 cppaonC <- function(orfrom, orto, orw, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, dem, algo) {
-    .Call(`_cppRouting_cppaonC`, orfrom, orto, orw, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, dem, algo)
+    .Call(`_cppRoutingCCH_cppaonC`, orfrom, orto, orw, gfrom, gto, gw, nb, rank, shortf, shortt, shortc, phast, dep, arr, dem, algo)
 }
 
 cpptraffic <- function(gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, lat, lon, k, dep, arr, dem, max_gap, max_it, method, aon_method, contract, phast, verbose) {
-    .Call(`_cppRouting_cpptraffic`, gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, lat, lon, k, dep, arr, dem, max_gap, max_it, method, aon_method, contract, phast, verbose)
+    .Call(`_cppRoutingCCH_cpptraffic`, gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, lat, lon, k, dep, arr, dem, max_gap, max_it, method, aon_method, contract, phast, verbose)
 }
 
 cpptrafficcch <- function(gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, dep, arr, dem, max_gap, max_it, method, rank, tail, head, first_out, adj_head, adj_arc, rank_first_out, rank_adj_head, rank_adj_arc, input_arc, input_forward, elimination_tree_parent, verbose) {
-    .Call(`_cppRouting_cpptrafficcch`, gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, dep, arr, dem, max_gap, max_it, method, rank, tail, head, first_out, adj_head, adj_arc, rank_first_out, rank_adj_head, rank_adj_arc, input_arc, input_forward, elimination_tree_parent, verbose)
+    .Call(`_cppRoutingCCH_cpptrafficcch`, gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, dep, arr, dem, max_gap, max_it, method, rank, tail, head, first_out, adj_head, adj_arc, rank_first_out, rank_adj_head, rank_adj_arc, input_arc, input_forward, elimination_tree_parent, verbose)
 }
 
 cppalgB <- function(gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, lat, lon, k, dep, arr, dem, max_gap, max_it, aon_method, batch_size, n_batch, file_path, inner_iter, NUM_TOL, contract, phast, verbose) {
-    .Call(`_cppRouting_cppalgB`, gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, lat, lon, k, dep, arr, dem, max_gap, max_it, aon_method, batch_size, n_batch, file_path, inner_iter, NUM_TOL, contract, phast, verbose)
+    .Call(`_cppRoutingCCH_cppalgB`, gfrom, gto, gw, gflow, gaux, gftt, galpha, gbeta, gcap, nb, lat, lon, k, dep, arr, dem, max_gap, max_it, aon_method, batch_size, n_batch, file_path, inner_iter, NUM_TOL, contract, phast, verbose)
 }
 

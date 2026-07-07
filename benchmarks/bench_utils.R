@@ -1,4 +1,4 @@
-library(cppRouting)
+library(cppRoutingCCH)
 library(data.table)
 
 parse_csv_arg <- function(value) {

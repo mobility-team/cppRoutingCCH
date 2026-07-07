@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // cppdist
 Rcpp::NumericVector cppdist(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<double> lat, std::vector<double> lon, double k, std::vector<int> dep, std::vector<int> arr, int algo);
-RcppExport SEXP _cppRouting_cppdist(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdist(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -32,7 +32,7 @@ END_RCPP
 }
 // cpppath
 Rcpp::List cpppath(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<double> lat, std::vector<double> lon, double k, std::vector<std::string> dict, std::vector<int> keep, std::vector<int> dep, std::vector<int> arr, double lim, int algo);
-RcppExport SEXP _cppRouting_cpppath(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP limSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpppath(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP limSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,7 +55,7 @@ END_RCPP
 }
 // cppdistmat
 Rcpp::NumericMatrix cppdistmat(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int> dep, std::vector<int> arr);
-RcppExport SEXP _cppRouting_cppdistmat(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP depSEXP, SEXP arrSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdistmat(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP depSEXP, SEXP arrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -71,7 +71,7 @@ END_RCPP
 }
 // cpppathmat
 Rcpp::List cpppathmat(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<std::string> dict, std::vector<int> keep, std::vector<int> dep, std::vector<int> arr, std::vector<double> lim, bool setdif, int algo, bool reverse);
-RcppExport SEXP _cppRouting_cpppathmat(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP limSEXP, SEXP setdifSEXP, SEXP algoSEXP, SEXP reverseSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpppathmat(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP limSEXP, SEXP setdifSEXP, SEXP algoSEXP, SEXP reverseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -93,7 +93,7 @@ END_RCPP
 }
 // cppsimplify
 Rcpp::List cppsimplify(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int> keep, bool rm_loop, bool iterate, bool progress);
-RcppExport SEXP _cppRouting_cppsimplify(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP keepSEXP, SEXP rm_loopSEXP, SEXP iterateSEXP, SEXP progressSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppsimplify(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP keepSEXP, SEXP rm_loopSEXP, SEXP iterateSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -111,7 +111,7 @@ END_RCPP
 }
 // cppcontract
 Rcpp::List cppcontract(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int NbNodes, bool display_progress);
-RcppExport SEXP _cppRouting_cppcontract(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP NbNodesSEXP, SEXP display_progressSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppcontract(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP NbNodesSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -126,7 +126,7 @@ END_RCPP
 }
 // cppcchprepare
 Rcpp::List cppcchprepare(std::vector<int>& gfrom, std::vector<int>& gto, int NbNodes, std::vector<int> order);
-RcppExport SEXP _cppRouting_cppcchprepare(SEXP gfromSEXP, SEXP gtoSEXP, SEXP NbNodesSEXP, SEXP orderSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppcchprepare(SEXP gfromSEXP, SEXP gtoSEXP, SEXP NbNodesSEXP, SEXP orderSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -140,7 +140,7 @@ END_RCPP
 }
 // cppcchcustomize
 Rcpp::List cppcchcustomize(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int NbNodes, std::vector<int>& rank, std::vector<int>& tail, std::vector<int>& head, std::vector<int>& rank_first_out, std::vector<int>& rank_adj_head, std::vector<int>& rank_adj_arc, std::vector<int>& input_arc, std::vector<int>& input_forward);
-RcppExport SEXP _cppRouting_cppcchcustomize(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP NbNodesSEXP, SEXP rankSEXP, SEXP tailSEXP, SEXP headSEXP, SEXP rank_first_outSEXP, SEXP rank_adj_headSEXP, SEXP rank_adj_arcSEXP, SEXP input_arcSEXP, SEXP input_forwardSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppcchcustomize(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP NbNodesSEXP, SEXP rankSEXP, SEXP tailSEXP, SEXP headSEXP, SEXP rank_first_outSEXP, SEXP rank_adj_headSEXP, SEXP rank_adj_arcSEXP, SEXP input_arcSEXP, SEXP input_forwardSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -162,7 +162,7 @@ END_RCPP
 }
 // cppdistcch
 Rcpp::NumericVector cppdistcch(int NbNodes, std::vector<int>& first_out, std::vector<int>& adj_head, std::vector<int>& adj_arc, std::vector<double>& forward, std::vector<double>& backward, std::vector<int> dep, std::vector<int> arr);
-RcppExport SEXP _cppRouting_cppdistcch(SEXP NbNodesSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP depSEXP, SEXP arrSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdistcch(SEXP NbNodesSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP depSEXP, SEXP arrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -180,7 +180,7 @@ END_RCPP
 }
 // cppdistmatcch
 Rcpp::NumericMatrix cppdistmatcch(int NbNodes, std::vector<int>& first_out, std::vector<int>& adj_head, std::vector<int>& adj_arc, std::vector<double>& forward, std::vector<double>& backward, std::vector<int> dep, std::vector<int> arr);
-RcppExport SEXP _cppRouting_cppdistmatcch(SEXP NbNodesSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP depSEXP, SEXP arrSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdistmatcch(SEXP NbNodesSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP depSEXP, SEXP arrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -198,7 +198,7 @@ END_RCPP
 }
 // cpppathvaluescch
 Rcpp::NumericMatrix cpppathvaluescch(std::vector<int>& gfrom, int NbNodes, std::vector<int>& rank, std::vector<int>& first_out, std::vector<int>& adj_head, std::vector<int>& adj_arc, std::vector<int>& elimination_tree_parent, std::vector<double>& forward, std::vector<double>& backward, std::vector<int>& forward_first_arc, std::vector<int>& forward_first_dir, std::vector<int>& forward_second_arc, std::vector<int>& forward_second_dir, std::vector<int>& forward_original, std::vector<int>& backward_first_arc, std::vector<int>& backward_first_dir, std::vector<int>& backward_second_arc, std::vector<int>& backward_second_dir, std::vector<int>& backward_original, std::vector<int> dep, std::vector<int> arr, Rcpp::NumericMatrix values);
-RcppExport SEXP _cppRouting_cpppathvaluescch(SEXP gfromSEXP, SEXP NbNodesSEXP, SEXP rankSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP elimination_tree_parentSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP forward_first_arcSEXP, SEXP forward_first_dirSEXP, SEXP forward_second_arcSEXP, SEXP forward_second_dirSEXP, SEXP forward_originalSEXP, SEXP backward_first_arcSEXP, SEXP backward_first_dirSEXP, SEXP backward_second_arcSEXP, SEXP backward_second_dirSEXP, SEXP backward_originalSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP valuesSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpppathvaluescch(SEXP gfromSEXP, SEXP NbNodesSEXP, SEXP rankSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP elimination_tree_parentSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP forward_first_arcSEXP, SEXP forward_first_dirSEXP, SEXP forward_second_arcSEXP, SEXP forward_second_dirSEXP, SEXP forward_originalSEXP, SEXP backward_first_arcSEXP, SEXP backward_first_dirSEXP, SEXP backward_second_arcSEXP, SEXP backward_second_dirSEXP, SEXP backward_originalSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -230,7 +230,7 @@ END_RCPP
 }
 // cppaoncchelim
 Rcpp::List cppaoncchelim(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int NbNodes, std::vector<int>& rank, std::vector<int>& first_out, std::vector<int>& adj_head, std::vector<int>& adj_arc, std::vector<int>& elimination_tree_parent, std::vector<double>& forward, std::vector<double>& backward, std::vector<int>& forward_first_arc, std::vector<int>& forward_first_dir, std::vector<int>& forward_second_arc, std::vector<int>& forward_second_dir, std::vector<int>& forward_original, std::vector<int>& backward_first_arc, std::vector<int>& backward_first_dir, std::vector<int>& backward_second_arc, std::vector<int>& backward_second_dir, std::vector<int>& backward_original, std::vector<int> dep, std::vector<int> arr, std::vector<double> dem);
-RcppExport SEXP _cppRouting_cppaoncchelim(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP NbNodesSEXP, SEXP rankSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP elimination_tree_parentSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP forward_first_arcSEXP, SEXP forward_first_dirSEXP, SEXP forward_second_arcSEXP, SEXP forward_second_dirSEXP, SEXP forward_originalSEXP, SEXP backward_first_arcSEXP, SEXP backward_first_dirSEXP, SEXP backward_second_arcSEXP, SEXP backward_second_dirSEXP, SEXP backward_originalSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppaoncchelim(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP NbNodesSEXP, SEXP rankSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP elimination_tree_parentSEXP, SEXP forwardSEXP, SEXP backwardSEXP, SEXP forward_first_arcSEXP, SEXP forward_first_dirSEXP, SEXP forward_second_arcSEXP, SEXP forward_second_dirSEXP, SEXP forward_originalSEXP, SEXP backward_first_arcSEXP, SEXP backward_first_dirSEXP, SEXP backward_second_arcSEXP, SEXP backward_second_dirSEXP, SEXP backward_originalSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -264,7 +264,7 @@ END_RCPP
 }
 // cppdistC
 Rcpp::NumericVector cppdistC(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int>& rank, std::vector<int>& shortf, std::vector<int>& shortt, std::vector<int>& shortc, bool phast, std::vector<int> dep, std::vector<int> arr, int algo);
-RcppExport SEXP _cppRouting_cppdistC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdistC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -286,7 +286,7 @@ END_RCPP
 }
 // cpppathC
 Rcpp::List cpppathC(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int>& rank, std::vector<int>& shortf, std::vector<int>& shortt, std::vector<int>& shortc, bool phast, std::vector<std::string> dict, std::vector<int> keep, std::vector<int> dep, std::vector<int> arr, int algo);
-RcppExport SEXP _cppRouting_cpppathC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpppathC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -310,7 +310,7 @@ END_RCPP
 }
 // cppdistmatC
 Rcpp::NumericMatrix cppdistmatC(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int>& rank, std::vector<int>& shortf, std::vector<int>& shortt, std::vector<int>& shortc, bool phast, std::vector<int> dep, std::vector<int> arr, int algo);
-RcppExport SEXP _cppRouting_cppdistmatC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdistmatC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -332,7 +332,7 @@ END_RCPP
 }
 // cpppathmatC
 Rcpp::List cpppathmatC(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int>& rank, std::vector<int>& shortf, std::vector<int>& shortt, std::vector<int>& shortc, bool phast, std::vector<std::string> dict, std::vector<int> keep, std::vector<int> dep, std::vector<int> arr);
-RcppExport SEXP _cppRouting_cpppathmatC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpppathmatC(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP dictSEXP, SEXP keepSEXP, SEXP depSEXP, SEXP arrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -355,7 +355,7 @@ END_RCPP
 }
 // cpppadd
 Rcpp::NumericMatrix cpppadd(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, std::vector<double>& gadd, int nb, std::vector<int> dep, std::vector<int> arr);
-RcppExport SEXP _cppRouting_cpppadd(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gaddSEXP, SEXP nbSEXP, SEXP depSEXP, SEXP arrSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpppadd(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gaddSEXP, SEXP nbSEXP, SEXP depSEXP, SEXP arrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -372,7 +372,7 @@ END_RCPP
 }
 // cppdistadd
 Rcpp::NumericVector cppdistadd(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, std::vector<double>& gadd, int nb, std::vector<double> lat, std::vector<double> lon, double k, std::vector<int> dep, std::vector<int> arr, int algo);
-RcppExport SEXP _cppRouting_cppdistadd(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gaddSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdistadd(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gaddSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -393,7 +393,7 @@ END_RCPP
 }
 // cppdistaddC
 Rcpp::NumericVector cppdistaddC(std::vector<int>& orfrom, std::vector<int>& orto, std::vector<double>& orw, std::vector<double>& gadd, std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int>& rank, std::vector<int>& shortf, std::vector<int>& shortt, std::vector<int>& shortc, bool phast, std::vector<int> dep, std::vector<int> arr, int algo);
-RcppExport SEXP _cppRouting_cppdistaddC(SEXP orfromSEXP, SEXP ortoSEXP, SEXP orwSEXP, SEXP gaddSEXP, SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppdistaddC(SEXP orfromSEXP, SEXP ortoSEXP, SEXP orwSEXP, SEXP gaddSEXP, SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -419,7 +419,7 @@ END_RCPP
 }
 // cppaddC
 Rcpp::NumericMatrix cppaddC(std::vector<int>& orfrom, std::vector<int>& orto, std::vector<double>& orw, std::vector<double>& gadd, std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int>& rank, std::vector<int>& shortf, std::vector<int>& shortt, std::vector<int>& shortc, bool phast, std::vector<int> dep, std::vector<int> arr, int algo);
-RcppExport SEXP _cppRouting_cppaddC(SEXP orfromSEXP, SEXP ortoSEXP, SEXP orwSEXP, SEXP gaddSEXP, SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppaddC(SEXP orfromSEXP, SEXP ortoSEXP, SEXP orwSEXP, SEXP gaddSEXP, SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -445,7 +445,7 @@ END_RCPP
 }
 // cppaon
 Rcpp::List cppaon(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<double> lat, std::vector<double> lon, double k, std::vector<int> dep, std::vector<int> arr, std::vector<double> dem, int algo);
-RcppExport SEXP _cppRouting_cppaon(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppaon(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -466,7 +466,7 @@ END_RCPP
 }
 // cppaonC
 Rcpp::List cppaonC(std::vector<int>& orfrom, std::vector<int>& orto, std::vector<double>& orw, std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, int nb, std::vector<int>& rank, std::vector<int>& shortf, std::vector<int>& shortt, std::vector<int>& shortc, bool phast, std::vector<int> dep, std::vector<int> arr, std::vector<double> dem, int algo);
-RcppExport SEXP _cppRouting_cppaonC(SEXP orfromSEXP, SEXP ortoSEXP, SEXP orwSEXP, SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP algoSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppaonC(SEXP orfromSEXP, SEXP ortoSEXP, SEXP orwSEXP, SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP nbSEXP, SEXP rankSEXP, SEXP shortfSEXP, SEXP shorttSEXP, SEXP shortcSEXP, SEXP phastSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP algoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -492,7 +492,7 @@ END_RCPP
 }
 // cpptraffic
 Rcpp::List cpptraffic(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, std::vector<double>& gflow, std::vector<double>& gaux, std::vector<double>& gftt, std::vector<double>& galpha, std::vector<double>& gbeta, std::vector<double>& gcap, int nb, std::vector<double> lat, std::vector<double> lon, double k, std::vector<int> dep, std::vector<int> arr, std::vector<double> dem, double max_gap, int max_it, int method, int aon_method, bool contract, bool phast, bool verbose);
-RcppExport SEXP _cppRouting_cpptraffic(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gflowSEXP, SEXP gauxSEXP, SEXP gfttSEXP, SEXP galphaSEXP, SEXP gbetaSEXP, SEXP gcapSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP max_gapSEXP, SEXP max_itSEXP, SEXP methodSEXP, SEXP aon_methodSEXP, SEXP contractSEXP, SEXP phastSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpptraffic(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gflowSEXP, SEXP gauxSEXP, SEXP gfttSEXP, SEXP galphaSEXP, SEXP gbetaSEXP, SEXP gcapSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP max_gapSEXP, SEXP max_itSEXP, SEXP methodSEXP, SEXP aon_methodSEXP, SEXP contractSEXP, SEXP phastSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -525,7 +525,7 @@ END_RCPP
 }
 // cpptrafficcch
 Rcpp::List cpptrafficcch(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, std::vector<double>& gflow, std::vector<double>& gaux, std::vector<double>& gftt, std::vector<double>& galpha, std::vector<double>& gbeta, std::vector<double>& gcap, int nb, std::vector<int> dep, std::vector<int> arr, std::vector<double> dem, double max_gap, int max_it, int method, std::vector<int>& rank, std::vector<int>& tail, std::vector<int>& head, std::vector<int>& first_out, std::vector<int>& adj_head, std::vector<int>& adj_arc, std::vector<int>& rank_first_out, std::vector<int>& rank_adj_head, std::vector<int>& rank_adj_arc, std::vector<int>& input_arc, std::vector<int>& input_forward, std::vector<int>& elimination_tree_parent, bool verbose);
-RcppExport SEXP _cppRouting_cpptrafficcch(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gflowSEXP, SEXP gauxSEXP, SEXP gfttSEXP, SEXP galphaSEXP, SEXP gbetaSEXP, SEXP gcapSEXP, SEXP nbSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP max_gapSEXP, SEXP max_itSEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP tailSEXP, SEXP headSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP rank_first_outSEXP, SEXP rank_adj_headSEXP, SEXP rank_adj_arcSEXP, SEXP input_arcSEXP, SEXP input_forwardSEXP, SEXP elimination_tree_parentSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _cppRoutingCCH_cpptrafficcch(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gflowSEXP, SEXP gauxSEXP, SEXP gfttSEXP, SEXP galphaSEXP, SEXP gbetaSEXP, SEXP gcapSEXP, SEXP nbSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP max_gapSEXP, SEXP max_itSEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP tailSEXP, SEXP headSEXP, SEXP first_outSEXP, SEXP adj_headSEXP, SEXP adj_arcSEXP, SEXP rank_first_outSEXP, SEXP rank_adj_headSEXP, SEXP rank_adj_arcSEXP, SEXP input_arcSEXP, SEXP input_forwardSEXP, SEXP elimination_tree_parentSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -564,7 +564,7 @@ END_RCPP
 }
 // cppalgB
 Rcpp::List cppalgB(std::vector<int>& gfrom, std::vector<int>& gto, std::vector<double>& gw, std::vector<double>& gflow, std::vector<double>& gaux, std::vector<double>& gftt, std::vector<double>& galpha, std::vector<double>& gbeta, std::vector<double>& gcap, int nb, std::vector<double> lat, std::vector<double> lon, double k, std::vector<int> dep, std::vector<int> arr, std::vector<double> dem, double max_gap, int max_it, int aon_method, int batch_size, int n_batch, std::string file_path, int inner_iter, double NUM_TOL, bool contract, bool phast, bool verbose);
-RcppExport SEXP _cppRouting_cppalgB(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gflowSEXP, SEXP gauxSEXP, SEXP gfttSEXP, SEXP galphaSEXP, SEXP gbetaSEXP, SEXP gcapSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP max_gapSEXP, SEXP max_itSEXP, SEXP aon_methodSEXP, SEXP batch_sizeSEXP, SEXP n_batchSEXP, SEXP file_pathSEXP, SEXP inner_iterSEXP, SEXP NUM_TOLSEXP, SEXP contractSEXP, SEXP phastSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _cppRoutingCCH_cppalgB(SEXP gfromSEXP, SEXP gtoSEXP, SEXP gwSEXP, SEXP gflowSEXP, SEXP gauxSEXP, SEXP gfttSEXP, SEXP galphaSEXP, SEXP gbetaSEXP, SEXP gcapSEXP, SEXP nbSEXP, SEXP latSEXP, SEXP lonSEXP, SEXP kSEXP, SEXP depSEXP, SEXP arrSEXP, SEXP demSEXP, SEXP max_gapSEXP, SEXP max_itSEXP, SEXP aon_methodSEXP, SEXP batch_sizeSEXP, SEXP n_batchSEXP, SEXP file_pathSEXP, SEXP inner_iterSEXP, SEXP NUM_TOLSEXP, SEXP contractSEXP, SEXP phastSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -601,35 +601,35 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_cppRouting_cppdist", (DL_FUNC) &_cppRouting_cppdist, 10},
-    {"_cppRouting_cpppath", (DL_FUNC) &_cppRouting_cpppath, 13},
-    {"_cppRouting_cppdistmat", (DL_FUNC) &_cppRouting_cppdistmat, 6},
-    {"_cppRouting_cpppathmat", (DL_FUNC) &_cppRouting_cpppathmat, 12},
-    {"_cppRouting_cppsimplify", (DL_FUNC) &_cppRouting_cppsimplify, 8},
-    {"_cppRouting_cppcontract", (DL_FUNC) &_cppRouting_cppcontract, 5},
-    {"_cppRouting_cppcchprepare", (DL_FUNC) &_cppRouting_cppcchprepare, 4},
-    {"_cppRouting_cppcchcustomize", (DL_FUNC) &_cppRouting_cppcchcustomize, 12},
-    {"_cppRouting_cppdistcch", (DL_FUNC) &_cppRouting_cppdistcch, 8},
-    {"_cppRouting_cppdistmatcch", (DL_FUNC) &_cppRouting_cppdistmatcch, 8},
-    {"_cppRouting_cpppathvaluescch", (DL_FUNC) &_cppRouting_cpppathvaluescch, 22},
-    {"_cppRouting_cppaoncchelim", (DL_FUNC) &_cppRouting_cppaoncchelim, 24},
-    {"_cppRouting_cppdistC", (DL_FUNC) &_cppRouting_cppdistC, 12},
-    {"_cppRouting_cpppathC", (DL_FUNC) &_cppRouting_cpppathC, 14},
-    {"_cppRouting_cppdistmatC", (DL_FUNC) &_cppRouting_cppdistmatC, 12},
-    {"_cppRouting_cpppathmatC", (DL_FUNC) &_cppRouting_cpppathmatC, 13},
-    {"_cppRouting_cpppadd", (DL_FUNC) &_cppRouting_cpppadd, 7},
-    {"_cppRouting_cppdistadd", (DL_FUNC) &_cppRouting_cppdistadd, 11},
-    {"_cppRouting_cppdistaddC", (DL_FUNC) &_cppRouting_cppdistaddC, 16},
-    {"_cppRouting_cppaddC", (DL_FUNC) &_cppRouting_cppaddC, 16},
-    {"_cppRouting_cppaon", (DL_FUNC) &_cppRouting_cppaon, 11},
-    {"_cppRouting_cppaonC", (DL_FUNC) &_cppRouting_cppaonC, 16},
-    {"_cppRouting_cpptraffic", (DL_FUNC) &_cppRouting_cpptraffic, 23},
-    {"_cppRouting_cpptrafficcch", (DL_FUNC) &_cppRouting_cpptrafficcch, 29},
-    {"_cppRouting_cppalgB", (DL_FUNC) &_cppRouting_cppalgB, 27},
+    {"_cppRoutingCCH_cppdist", (DL_FUNC) &_cppRoutingCCH_cppdist, 10},
+    {"_cppRoutingCCH_cpppath", (DL_FUNC) &_cppRoutingCCH_cpppath, 13},
+    {"_cppRoutingCCH_cppdistmat", (DL_FUNC) &_cppRoutingCCH_cppdistmat, 6},
+    {"_cppRoutingCCH_cpppathmat", (DL_FUNC) &_cppRoutingCCH_cpppathmat, 12},
+    {"_cppRoutingCCH_cppsimplify", (DL_FUNC) &_cppRoutingCCH_cppsimplify, 8},
+    {"_cppRoutingCCH_cppcontract", (DL_FUNC) &_cppRoutingCCH_cppcontract, 5},
+    {"_cppRoutingCCH_cppcchprepare", (DL_FUNC) &_cppRoutingCCH_cppcchprepare, 4},
+    {"_cppRoutingCCH_cppcchcustomize", (DL_FUNC) &_cppRoutingCCH_cppcchcustomize, 12},
+    {"_cppRoutingCCH_cppdistcch", (DL_FUNC) &_cppRoutingCCH_cppdistcch, 8},
+    {"_cppRoutingCCH_cppdistmatcch", (DL_FUNC) &_cppRoutingCCH_cppdistmatcch, 8},
+    {"_cppRoutingCCH_cpppathvaluescch", (DL_FUNC) &_cppRoutingCCH_cpppathvaluescch, 22},
+    {"_cppRoutingCCH_cppaoncchelim", (DL_FUNC) &_cppRoutingCCH_cppaoncchelim, 24},
+    {"_cppRoutingCCH_cppdistC", (DL_FUNC) &_cppRoutingCCH_cppdistC, 12},
+    {"_cppRoutingCCH_cpppathC", (DL_FUNC) &_cppRoutingCCH_cpppathC, 14},
+    {"_cppRoutingCCH_cppdistmatC", (DL_FUNC) &_cppRoutingCCH_cppdistmatC, 12},
+    {"_cppRoutingCCH_cpppathmatC", (DL_FUNC) &_cppRoutingCCH_cpppathmatC, 13},
+    {"_cppRoutingCCH_cpppadd", (DL_FUNC) &_cppRoutingCCH_cpppadd, 7},
+    {"_cppRoutingCCH_cppdistadd", (DL_FUNC) &_cppRoutingCCH_cppdistadd, 11},
+    {"_cppRoutingCCH_cppdistaddC", (DL_FUNC) &_cppRoutingCCH_cppdistaddC, 16},
+    {"_cppRoutingCCH_cppaddC", (DL_FUNC) &_cppRoutingCCH_cppaddC, 16},
+    {"_cppRoutingCCH_cppaon", (DL_FUNC) &_cppRoutingCCH_cppaon, 11},
+    {"_cppRoutingCCH_cppaonC", (DL_FUNC) &_cppRoutingCCH_cppaonC, 16},
+    {"_cppRoutingCCH_cpptraffic", (DL_FUNC) &_cppRoutingCCH_cpptraffic, 23},
+    {"_cppRoutingCCH_cpptrafficcch", (DL_FUNC) &_cppRoutingCCH_cpptrafficcch, 29},
+    {"_cppRoutingCCH_cppalgB", (DL_FUNC) &_cppRoutingCCH_cppalgB, 27},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_cppRouting(DllInfo *dll) {
+RcppExport void R_init_cppRoutingCCH(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
