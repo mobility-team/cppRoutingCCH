@@ -5,6 +5,7 @@
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 using namespace RcppParallel;
@@ -40,8 +41,9 @@ IVec identity_order(int nb){
 }
 
 IVec min_degree_order(IVec &gfrom, IVec &gto, int nb){
-  // Conservative built-in fallback. It is simple and deterministic, but large
-  // road networks should eventually pass a stronger nested-dissection order.
+  // Conservative built-in fallback. A lazy heap avoids scanning every node at
+  // every elimination step. Large road networks should still pass a stronger
+  // nested-dissection order because order quality dominates CCH size.
   vector<set<int> > graph(nb);
   for (int i = 0; i < gfrom.size(); i++){
     if (gfrom[i] == gto[i]) continue;
@@ -52,21 +54,20 @@ IVec min_degree_order(IVec &gfrom, IVec &gto, int nb){
   IVec order;
   order.reserve(nb);
   IVec removed(nb, 0);
+  using DegreeNode = pair<size_t, int>;
+  priority_queue<DegreeNode, vector<DegreeNode>, greater<DegreeNode>> queue;
+  for (int node = 0; node < nb; node++) queue.push(make_pair(graph[node].size(), node));
 
   for (int step = 0; step < nb; step++){
-    int best = -1;
-    size_t best_degree = numeric_limits<size_t>::max();
-
-    for (int node = 0; node < nb; node++){
-      if (removed[node] == 1) continue;
-      size_t degree = graph[node].size();
-      if (degree < best_degree){
-        best = node;
-        best_degree = degree;
-      }
+    while (!queue.empty()){
+      int node = queue.top().second;
+      size_t degree = queue.top().first;
+      if (removed[node] == 0 && degree == graph[node].size()) break;
+      queue.pop();
     }
-
-    if (best == -1) break;
+    if (queue.empty()) break;
+    int best = queue.top().second;
+    queue.pop();
 
     IVec neighbors;
     for (set<int>::iterator it = graph[best].begin(); it != graph[best].end(); ++it){
@@ -75,12 +76,19 @@ IVec min_degree_order(IVec &gfrom, IVec &gto, int nb){
 
     for (int i = 0; i < neighbors.size(); i++){
       for (int j = i + 1; j < neighbors.size(); j++){
-        graph[neighbors[i]].insert(neighbors[j]);
+        bool inserted = graph[neighbors[i]].insert(neighbors[j]).second;
         graph[neighbors[j]].insert(neighbors[i]);
+        if (inserted){
+          queue.push(make_pair(graph[neighbors[i]].size(), neighbors[i]));
+          queue.push(make_pair(graph[neighbors[j]].size(), neighbors[j]));
+        }
       }
     }
 
-    for (int i = 0; i < neighbors.size(); i++) graph[neighbors[i]].erase(best);
+    for (int neighbor : neighbors){
+      graph[neighbor].erase(best);
+      queue.push(make_pair(graph[neighbor].size(), neighbor));
+    }
     graph[best].clear();
     removed[best] = 1;
     order.push_back(best);
@@ -101,41 +109,6 @@ IVec rank_from_order(IVec order, int nb){
     rank[node] = i;
   }
   return rank;
-}
-
-void dijkstra_up(int start,
-                 int nb,
-                 IVec &first_out,
-                 IVec &adj_head,
-                 IVec &adj_arc,
-                 DVec &weight,
-                 DVec &distances){
-  // Basic upward Dijkstra on the customized CCH graph. It is used for distance
-  // matrix helpers; traffic assignment uses the elimination-tree query below.
-  distances[start] = 0.0;
-  PQ queue;
-  queue.push(make_pair(start, 0.0));
-
-  while (!queue.empty()){
-    int node = queue.top().first;
-    double dist = queue.top().second;
-    queue.pop();
-
-    if (dist > distances[node]) continue;
-
-    for (int i = first_out[node]; i < first_out[node + 1]; i++){
-      int arc = adj_arc[i];
-      int next = adj_head[i];
-      double edge_weight = weight[arc];
-      if (edge_weight == INF) continue;
-
-      double tentative = dist + edge_weight;
-      if (tentative < distances[next]){
-        distances[next] = tentative;
-        queue.push(make_pair(next, tentative));
-      }
-    }
-  }
 }
 
 void touch_node(int node, IVec &is_touched, IVec &touched){
@@ -330,6 +303,39 @@ void unpack_metric_arc(int arc,
                       backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original,
                       path_edges);
   }
+}
+
+struct EndpointGroups {
+  bool group_sources;
+  IVec roots;
+  vector<IVec> pairs;
+};
+
+EndpointGroups group_pairs_by_repeated_endpoint(const IVec &dep, const IVec &arr){
+  unordered_set<int> sources(dep.begin(), dep.end());
+  unordered_set<int> targets(arr.begin(), arr.end());
+
+  EndpointGroups result;
+  result.group_sources = sources.size() <= targets.size();
+
+  const IVec &endpoint = result.group_sources ? dep : arr;
+  unordered_map<int, int> root_to_group;
+  size_t group_count = result.group_sources ? sources.size() : targets.size();
+  root_to_group.reserve(group_count);
+  result.roots.reserve(group_count);
+  result.pairs.reserve(group_count);
+
+  for (int pair = 0; pair < static_cast<int>(endpoint.size()); pair++){
+    int root = endpoint[pair];
+    auto inserted = root_to_group.emplace(root, static_cast<int>(result.pairs.size()));
+    if (inserted.second){
+      result.roots.push_back(root);
+      result.pairs.push_back(IVec());
+    }
+    result.pairs[inserted.first->second].push_back(pair);
+  }
+
+  return result;
 }
 
 struct CCHDistancePairWorker : public Worker {
@@ -776,37 +782,142 @@ DVec distance_pair_cch(int nb,
   return result;
 }
 
+struct CCHDistanceMatrixWorker : public Worker {
+  int nb;
+  IVec &first_out;
+  IVec &adj_head;
+  IVec &adj_arc;
+  DVec &outgoing_weight;
+  DVec &incoming_weight;
+  IVec &elimination_tree_parent;
+  IVec &roots;
+  IVec &pinned;
+  IVec &pinned_stack;
+  bool roots_are_sources;
+  RMatrix<double> result;
+
+  CCHDistanceMatrixWorker(int nb,
+                          IVec &first_out,
+                          IVec &adj_head,
+                          IVec &adj_arc,
+                          DVec &outgoing_weight,
+                          DVec &incoming_weight,
+                          IVec &elimination_tree_parent,
+                          IVec &roots,
+                          IVec &pinned,
+                          IVec &pinned_stack,
+                          bool roots_are_sources,
+                          Rcpp::NumericMatrix result)
+    : nb(nb), first_out(first_out), adj_head(adj_head), adj_arc(adj_arc),
+      outgoing_weight(outgoing_weight), incoming_weight(incoming_weight),
+      elimination_tree_parent(elimination_tree_parent), roots(roots), pinned(pinned),
+      pinned_stack(pinned_stack), roots_are_sources(roots_are_sources), result(result) {}
+
+  void relax_outgoing(int node, DVec &dist, IVec &is_touched, IVec &touched){
+    if (dist[node] == INF) return;
+    for (int i = first_out[node]; i < first_out[node + 1]; i++){
+      int arc = adj_arc[i];
+      double weight = outgoing_weight[arc];
+      if (weight == INF) continue;
+      int next = adj_head[i];
+      double candidate = dist[node] + weight;
+      if (candidate < dist[next]){
+        touch_node(next, is_touched, touched);
+        dist[next] = candidate;
+      }
+    }
+  }
+
+  void relax_incoming(int node, DVec &dist, IVec &is_touched, IVec &touched){
+    for (int i = first_out[node]; i < first_out[node + 1]; i++){
+      int arc = adj_arc[i];
+      double weight = incoming_weight[arc];
+      int next = adj_head[i];
+      if (weight == INF || dist[next] == INF) continue;
+      double candidate = dist[next] + weight;
+      if (candidate < dist[node]){
+        touch_node(node, is_touched, touched);
+        dist[node] = candidate;
+      }
+    }
+  }
+
+  void operator()(std::size_t begin, std::size_t end){
+    DVec dist(nb, INF);
+    IVec is_touched(nb, 0);
+    IVec touched;
+
+    for (std::size_t root_index = begin; root_index != end; root_index++){
+      int root = roots[root_index];
+      touch_node(root, is_touched, touched);
+      dist[root] = 0.0;
+
+      for_ancestors(elimination_tree_parent, root, [&](int node){
+        relax_outgoing(node, dist, is_touched, touched);
+        return true;
+      });
+
+      for (int node : pinned_stack) relax_incoming(node, dist, is_touched, touched);
+
+      for (int pinned_index = 0; pinned_index < static_cast<int>(pinned.size()); pinned_index++){
+        if (roots_are_sources){
+          result(root_index, pinned_index) = dist[pinned[pinned_index]];
+        } else {
+          result(pinned_index, root_index) = dist[pinned[pinned_index]];
+        }
+      }
+
+      for (int node : touched){
+        dist[node] = INF;
+        is_touched[node] = 0;
+      }
+      touched.clear();
+    }
+  }
+};
+
 Rcpp::NumericMatrix distance_matrix_cch(int nb,
+                                        IVec &rank,
                                         IVec &first_out,
                                         IVec &adj_head,
                                         IVec &adj_arc,
+                                        IVec &elimination_tree_parent,
                                         DVec &forward,
                                         DVec &backward,
                                         IVec dep,
                                         IVec arr){
-  // Distance matrix helper. It precomputes one backward upward search per
-  // destination, then combines it with each origin search.
   Rcpp::NumericMatrix result(dep.size(), arr.size());
-  DVec dist_forward(nb, INF);
-  DVec dist_backward(nb, INF);
-  vector<DVec> backward_dist(arr.size(), DVec(nb, INF));
+  if (dep.empty() || arr.empty()) return result;
 
-  for (int j = 0; j < arr.size(); j++){
-    dijkstra_up(arr[j], nb, first_out, adj_head, adj_arc, backward, backward_dist[j]);
-  }
+  bool roots_are_sources = dep.size() <= arr.size();
+  IVec &roots = roots_are_sources ? dep : arr;
+  IVec &pinned = roots_are_sources ? arr : dep;
+  DVec &outgoing_weight = roots_are_sources ? forward : backward;
+  DVec &incoming_weight = roots_are_sources ? backward : forward;
 
-  for (int i = 0; i < dep.size(); i++){
-    dijkstra_up(dep[i], nb, first_out, adj_head, adj_arc, forward, dist_forward);
-    for (int j = 0; j < arr.size(); j++){
-      double best = INF;
-      for (int node = 0; node < nb; node++){
-        if (dist_forward[node] == INF || backward_dist[j][node] == INF) continue;
-        double candidate = dist_forward[node] + backward_dist[j][node];
-        if (candidate < best) best = candidate;
+  IVec is_pinned_ancestor(nb, 0);
+  IVec pinned_stack;
+  for (int endpoint : pinned){
+    for_ancestors(elimination_tree_parent, endpoint, [&](int node){
+      if (is_pinned_ancestor[node] == 0){
+        is_pinned_ancestor[node] = 1;
+        pinned_stack.push_back(node);
       }
-      result(i, j) = best;
-    }
-    fill(dist_forward.begin(), dist_forward.end(), INF);
+      return true;
+    });
+  }
+  sort(pinned_stack.begin(), pinned_stack.end(), [&](int a, int b){
+    return rank[a] > rank[b];
+  });
+
+  CCHDistanceMatrixWorker worker(nb, first_out, adj_head, adj_arc,
+                                 outgoing_weight, incoming_weight,
+                                 elimination_tree_parent, roots, pinned,
+                                 pinned_stack, roots_are_sources, result);
+  if (roots.size() <= 1 || nb <= 1000){
+    worker(0, roots.size());
+  } else {
+    parallelFor(0, roots.size(), worker);
   }
 
   return result;
@@ -841,6 +952,7 @@ struct CCHPathValuesPairWorker : public Worker {
   IVec &dep;
   IVec &arr;
   DVec &values;
+  IVec &group_roots;
   vector<IVec> &groups;
   bool group_sources;
   DVec &result;
@@ -868,6 +980,7 @@ struct CCHPathValuesPairWorker : public Worker {
                           IVec &dep,
                           IVec &arr,
                           DVec &values,
+                          IVec &group_roots,
                           vector<IVec> &groups,
                           bool group_sources,
                           DVec &result)
@@ -879,7 +992,7 @@ struct CCHPathValuesPairWorker : public Worker {
       backward_first_arc(backward_first_arc), backward_first_dir(backward_first_dir),
       backward_second_arc(backward_second_arc), backward_second_dir(backward_second_dir),
       backward_original(backward_original), dep(dep), arr(arr), values(values),
-      groups(groups), group_sources(group_sources), result(result) {}
+      group_roots(group_roots), groups(groups), group_sources(group_sources), result(result) {}
 
   CCHPathValuesPairWorker(CCHPathValuesPairWorker &other, Split)
     : gfrom(other.gfrom), nb(other.nb), n_values(other.n_values), rank(other.rank),
@@ -892,7 +1005,7 @@ struct CCHPathValuesPairWorker : public Worker {
       backward_first_arc(other.backward_first_arc), backward_first_dir(other.backward_first_dir),
       backward_second_arc(other.backward_second_arc), backward_second_dir(other.backward_second_dir),
       backward_original(other.backward_original), dep(other.dep), arr(other.arr), values(other.values),
-      groups(other.groups), group_sources(other.group_sources), result(other.result) {}
+      group_roots(other.group_roots), groups(other.groups), group_sources(other.group_sources), result(other.result) {}
 
   void add_recovered_values(int pair_index,
                             int start,
@@ -959,7 +1072,7 @@ struct CCHPathValuesPairWorker : public Worker {
     for (std::size_t group_id = begin; group_id != end; group_id++){
       if (groups[group_id].size() == 0) continue;
 
-      int root = static_cast<int>(group_id);
+      int root = group_roots[group_id];
       touch_distance_node(root, dist, pred_node, pred_arc, pred_dir, is_touched, touched);
       dist[root] = 0.0;
 
@@ -1047,34 +1160,19 @@ Rcpp::NumericMatrix path_values_pair_cch(IVec &gfrom,
                                          IVec arr,
                                          DVec &values,
                                          int n_values){
-  IVec source_count(nb, 0);
-  IVec target_count(nb, 0);
-  int unique_sources = 0;
-  int unique_targets = 0;
-  for (int i = 0; i < dep.size(); i++){
-    if (source_count[dep[i]] == 0) unique_sources++;
-    if (target_count[arr[i]] == 0) unique_targets++;
-    source_count[dep[i]]++;
-    target_count[arr[i]]++;
-  }
-
-  bool group_sources = unique_sources <= unique_targets;
-  vector<IVec> groups(nb);
-  for (int i = 0; i < dep.size(); i++){
-    int group_id = group_sources ? dep[i] : arr[i];
-    groups[group_id].push_back(i);
-  }
+  EndpointGroups endpoint_groups = group_pairs_by_repeated_endpoint(dep, arr);
 
   DVec result((n_values + 1) * dep.size(), INF);
   CCHPathValuesPairWorker worker(gfrom, nb, n_values, rank, first_out, adj_head, adj_arc, elimination_tree_parent,
                                  forward, backward,
                                  forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original,
                                  backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original,
-                                 dep, arr, values, groups, group_sources, result);
-  if (dep.size() <= 1000 || nb <= 1000){
-    worker(0, nb);
+                                 dep, arr, values, endpoint_groups.roots, endpoint_groups.pairs,
+                                 endpoint_groups.group_sources, result);
+  if (dep.size() <= 1000 || nb <= 1000 || endpoint_groups.pairs.size() <= 1){
+    worker(0, endpoint_groups.pairs.size());
   } else {
-    parallelFor(0, nb, worker);
+    parallelFor(0, endpoint_groups.pairs.size(), worker);
   }
 
   Rcpp::NumericMatrix out(dep.size(), n_values + 1);
@@ -1119,6 +1217,7 @@ struct CCHEliminationGroupedAonWorker : public Worker {
   IVec &dep;
   IVec &arr;
   DVec &demand;
+  IVec &group_roots;
   vector<IVec> &groups;
   bool group_sources;
   DVec flow;
@@ -1145,6 +1244,7 @@ struct CCHEliminationGroupedAonWorker : public Worker {
                                  IVec &dep,
                                  IVec &arr,
                                  DVec &demand,
+                                 IVec &group_roots,
                                  vector<IVec> &groups,
                                  bool group_sources)
     : gfrom(gfrom), nb(nb), rank(rank), first_out(first_out), adj_head(adj_head), adj_arc(adj_arc),
@@ -1155,7 +1255,7 @@ struct CCHEliminationGroupedAonWorker : public Worker {
       backward_first_arc(backward_first_arc), backward_first_dir(backward_first_dir),
       backward_second_arc(backward_second_arc), backward_second_dir(backward_second_dir),
       backward_original(backward_original), dep(dep), arr(arr), demand(demand),
-      groups(groups), group_sources(group_sources), flow(gfrom.size(), 0.0) {}
+      group_roots(group_roots), groups(groups), group_sources(group_sources), flow(gfrom.size(), 0.0) {}
 
   CCHEliminationGroupedAonWorker(CCHEliminationGroupedAonWorker &other, Split)
     : gfrom(other.gfrom), nb(other.nb), rank(other.rank),
@@ -1168,7 +1268,7 @@ struct CCHEliminationGroupedAonWorker : public Worker {
       backward_first_arc(other.backward_first_arc), backward_first_dir(other.backward_first_dir),
       backward_second_arc(other.backward_second_arc), backward_second_dir(other.backward_second_dir),
       backward_original(other.backward_original), dep(other.dep), arr(other.arr), demand(other.demand),
-      groups(other.groups), group_sources(other.group_sources), flow(other.gfrom.size(), 0.0) {}
+      group_roots(other.group_roots), groups(other.groups), group_sources(other.group_sources), flow(other.gfrom.size(), 0.0) {}
 
   void join(CCHEliminationGroupedAonWorker &other){
     for (int i = 0; i < flow.size(); i++) flow[i] += other.flow[i];
@@ -1231,7 +1331,7 @@ struct CCHEliminationGroupedAonWorker : public Worker {
     for (std::size_t group_id = begin; group_id != end; group_id++){
       if (groups[group_id].size() == 0) continue;
 
-      int root = static_cast<int>(group_id);
+      int root = group_roots[group_id];
       touch_distance_node(root, dist, pred_node, pred_arc, pred_dir, is_touched, touched);
       dist[root] = 0.0;
 
@@ -1333,36 +1433,18 @@ DVec aon_flow_cch_elimination_grouped(IVec &gfrom,
   // Public native AON entry point for the current CCH implementation. The R API
   // exposes this as aon_method = "cch". Older pairwise/grouped CCH query modes
   // were removed so assignment always uses this elimination-tree path.
-  IVec source_count(nb, 0);
-  IVec target_count(nb, 0);
-  int unique_sources = 0;
-  int unique_targets = 0;
-  for (int i = 0; i < dep.size(); i++){
-    if (source_count[dep[i]] == 0) unique_sources++;
-    if (target_count[arr[i]] == 0) unique_targets++;
-    source_count[dep[i]]++;
-    target_count[arr[i]]++;
-  }
-
-  bool group_sources = unique_sources <= unique_targets;
-  // Group by origins when origins repeat more than destinations; otherwise
-  // group by destinations. Mobility-like OD tables often have repeated
-  // transport-zone endpoints, so this is the core query-time saving.
-  vector<IVec> groups(nb);
-  for (int i = 0; i < dep.size(); i++){
-    int group_id = group_sources ? dep[i] : arr[i];
-    groups[group_id].push_back(i);
-  }
+  EndpointGroups endpoint_groups = group_pairs_by_repeated_endpoint(dep, arr);
 
   CCHEliminationGroupedAonWorker worker(gfrom, nb, rank, first_out, adj_head, adj_arc, elimination_tree_parent,
                                         forward, backward,
                                         forward_first_arc, forward_first_dir, forward_second_arc, forward_second_dir, forward_original,
                                         backward_first_arc, backward_first_dir, backward_second_arc, backward_second_dir, backward_original,
-                                        dep, arr, demand, groups, group_sources);
-  if (dep.size() <= 1000 || nb <= 1000){
-    worker(0, nb);
+                                        dep, arr, demand, endpoint_groups.roots, endpoint_groups.pairs,
+                                        endpoint_groups.group_sources);
+  if (dep.size() <= 1000 || nb <= 1000 || endpoint_groups.pairs.size() <= 1){
+    worker(0, endpoint_groups.pairs.size());
   } else {
-    parallelReduce(0, nb, worker);
+    parallelReduce(0, endpoint_groups.pairs.size(), worker);
   }
 
   return worker.flow;

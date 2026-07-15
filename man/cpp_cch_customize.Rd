@@ -13,7 +13,7 @@ cpp_cch_customize(CCH, weights = NULL)
 }
 \value{
 A customized CCH metric object usable by \link{get_distance_pair},
-\link{get_distance_matrix} and \link{get_aon}.
+\link{get_distance_matrix}, \link{get_path_values_pair}, and \link{get_aon}.
 }
 \description{
 Update a prepared CCH with the edge weights that should be used for shortest
@@ -24,4 +24,9 @@ so it is the step to repeat when congestion changes travel times.
 The \code{weights} vector must follow the same edge order as
 \code{CCH$original$data}. In a traffic model this is normally the current
 congested travel time for every edge.
+}
+\references{
+Dibbelt, J., Strasser, B., and Wagner, D. (2016).
+"Customizable Contraction Hierarchies". ACM Journal of Experimental
+Algorithmics, 21, Article 1.5. \doi{10.1145/2886843}.
 }

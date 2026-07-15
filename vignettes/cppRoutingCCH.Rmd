@@ -1,0 +1,102 @@
+---
+title: "cppRoutingCCH"
+author: "Vincent Larmet and Félix Pouchain"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cppRoutingCCH}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+# Overview
+
+`cppRoutingCCH` is a fork of `cppRouting` that adds customizable contraction
+hierarchies (CCH). A CCH is useful when the road topology stays fixed while
+edge costs change repeatedly, as in congestion assignment.
+
+A CCH has three phases:
+
+1. prepare the topology and node order once;
+2. customize shortcut weights whenever edge costs change;
+3. run distance, path-value, or all-or-nothing queries.
+
+# Installation
+
+```{r, eval=FALSE}
+install.packages(
+  "cppRoutingCCH",
+  repos = c(
+    "https://mobility-team.r-universe.dev",
+    "https://cloud.r-project.org"
+  )
+)
+```
+
+# Prepare and query a CCH
+
+```{r}
+library(cppRoutingCCH)
+
+edges <- data.frame(
+  from = c("a", "b", "a"),
+  to = c("b", "c", "c"),
+  time = c(1, 2, 5),
+  distance = c(10, 20, 30)
+)
+
+graph <- makegraph(edges[, c("from", "to", "time")], directed = TRUE)
+cch <- cpp_cch_prepare(graph)
+metric <- cpp_cch_customize(cch)
+
+get_distance_pair(metric, from = "a", to = "c")
+get_distance_matrix(metric, from = c("a", "b"), to = c("b", "c"))
+
+get_path_values_pair(
+  metric,
+  from = "a",
+  to = "c",
+  values = data.frame(distance = edges$distance)
+)
+```
+
+`get_path_values_pair()` also accepts a graph produced by `cpp_contract()`.
+It routes once and can accumulate several edge-value columns along that path.
+
+# Reuse topology during traffic assignment
+
+Prepare the topology outside `assign_traffic()` when several runs use the same
+road graph:
+
+```{r, eval=FALSE}
+cch <- cpp_cch_prepare(graph)
+
+traffic <- assign_traffic(
+  graph,
+  from = trips$from,
+  to = trips$to,
+  demand = trips$demand,
+  algorithm = "cfw",
+  aon_method = "cch",
+  cch = cch
+)
+```
+
+The topology can be stored with `saveRDS()` and reused while the graph's edge
+set and order remain unchanged. Saved objects from older CCH formats must be
+regenerated when the package reports a topology-version error.
+
+# Node orders
+
+The built-in order is intended as a deterministic fallback. Large road graphs
+should use a fill-reducing nested-dissection order. A regular CH contraction
+order is generally not a good CCH order.
+
+# References
+
+Dibbelt, J., Strasser, B., and Wagner, D. (2016). Customizable Contraction
+Hierarchies. *ACM Journal of Experimental Algorithmics*, 21, Article 1.5.
