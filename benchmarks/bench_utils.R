@@ -7,15 +7,44 @@ parse_csv_arg <- function(value) {
   items[nzchar(items)]
 }
 
+decompress_gzip <- function(source, target) {
+  input <- gzfile(source, "rb")
+  output <- file(target, "wb")
+  on.exit(close(input))
+  on.exit(close(output), add = TRUE)
+
+  repeat {
+    chunk <- readBin(input, what = "raw", n = 1024L * 1024L)
+    if (!length(chunk)) break
+    writeBin(chunk, output)
+  }
+
+  invisible(target)
+}
+
 read_benchmark_edges <- function(dataset) {
-  if (dataset == "chicago") {
+  dimacs_file <- dataset
+  if (file.exists(dataset) && grepl("[.]gr[.]gz$", dataset, ignore.case = TRUE)) {
+    dimacs_file <- tempfile(fileext = ".gr")
+    on.exit(unlink(dimacs_file), add = TRUE)
+    decompress_gzip(dataset, dimacs_file)
+  }
+
+  if (file.exists(dimacs_file) && grepl("[.]gr$", dimacs_file, ignore.case = TRUE)) {
+    raw <- data.table::fread(dimacs_file, skip = "a ", header = FALSE, nThread = 1)
+    if (ncol(raw) != 4L || !all(raw[[1]] == "a")) {
+      stop("invalid DIMACS .gr file: ", dataset)
+    }
+    edges <- data.frame(from = raw[[2]], to = raw[[3]], cost = raw[[4]])
+    return(edges[is.finite(edges$cost) & edges$cost >= 0, ])
+  } else if (dataset == "chicago") {
     file <- "data_readme/chicagoregional_net.csv"
     cost_col <- "length"
   } else if (dataset == "roads") {
     file <- "data_readme/roads.csv"
     cost_col <- "weight"
   } else {
-    stop("unknown dataset: ", dataset)
+    stop("unknown dataset or DIMACS .gr path: ", dataset)
   }
 
   raw <- data.table::fread(file, nThread = 1)
@@ -44,10 +73,12 @@ make_benchmark_graph <- function(dataset, capacity = NULL, perturb = FALSE) {
 
 make_random_od <- function(nodes, pairs_n, seed = 42L, demand = FALSE) {
   set.seed(seed)
-  od <- data.frame(
-    from = sample(nodes, pairs_n, replace = TRUE),
-    to = sample(nodes, pairs_n, replace = TRUE)
+  pairs <- avoid_same_node(
+    sample(nodes, pairs_n, replace = TRUE),
+    sample(nodes, pairs_n, replace = TRUE),
+    nodes
   )
+  od <- data.frame(from = pairs$from, to = pairs$to)
   if (demand) od$demand <- sample(1:10, pairs_n, replace = TRUE)
   od
 }
@@ -88,21 +119,6 @@ make_shaped_od <- function(shape, nodes, pairs_n, seed) {
       nodes
     )
     demand <- sample(1:10, pairs_n, replace = TRUE)
-  } else if (shape == "volume_ranked") {
-    candidate_n <- pairs_n * 3L
-    pairs <- avoid_same_node(
-      sample(nodes, candidate_n, replace = TRUE),
-      sample(nodes, candidate_n, replace = TRUE),
-      nodes
-    )
-    od <- data.table(from = pairs$from, to = pairs$to, demand = rlnorm(candidate_n, 0, 2))
-    od <- od[, list(demand = sum(demand)), by = list(from, to)]
-    setorder(od, -demand)
-    od[, cum_share := cumsum(demand) / sum(demand)]
-    od[, flow_rank := .I]
-    od <- od[cum_share <= 0.95 | flow_rank == 1]
-    if (nrow(od) > pairs_n) od <- od[seq_len(pairs_n)]
-    return(od[, list(from, to, demand = demand / 0.95)])
   } else {
     stop("unknown OD shape: ", shape)
   }
@@ -129,4 +145,23 @@ make_assignment_like_weights <- function(base_cost, iteration) {
 
 sort_flow_table <- function(x) {
   x[order(x$from, x$to), ]
+}
+
+is_prepared_cch_method <- function(method) {
+  identical(method, "cch_prepared")
+}
+
+cch_aon_method <- function(method) {
+  if (is_prepared_cch_method(method)) "cch" else method
+}
+
+flow_check <- function(reference, candidate, tolerance = 1e-7) {
+  reference <- sort_flow_table(reference)
+  candidate <- sort_flow_table(candidate)
+  flow_diff <- abs(reference$flow - candidate$flow)
+  c(
+    flow_mismatches = sum(flow_diff > tolerance),
+    max_flow_diff = max(flow_diff),
+    max_cost_diff = max(abs(reference$cost - candidate$cost))
+  )
 }

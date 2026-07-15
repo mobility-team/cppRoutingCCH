@@ -7,6 +7,11 @@ src/*.o
 src/*.so
 src/*.dll
 .Rproj.user
+/.agents/
+/.codex/
+/inst/doc/
+/build/
+/..Rcheck/
 
 # Created by https://www.toptal.com/developers/gitignore/api/r
 # Edit at https://www.toptal.com/developers/gitignore?templates=r

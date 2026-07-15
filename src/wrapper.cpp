@@ -273,10 +273,13 @@ Rcpp::NumericVector cppdistcch(int NbNodes,
 
 // [[Rcpp::export]]
 Rcpp::NumericMatrix cppdistmatcch(int NbNodes,
+                                  std::vector<int> &rank,
                                   std::vector<int> &first_out, std::vector<int> &adj_head, std::vector<int> &adj_arc,
+                                  std::vector<int> &elimination_tree_parent,
                                   std::vector<double> &forward, std::vector<double> &backward,
                                   std::vector<int> dep, std::vector<int> arr){
-  Rcpp::NumericMatrix result = distance_matrix_cch(NbNodes, first_out, adj_head, adj_arc, forward, backward, dep, arr);
+  Rcpp::NumericMatrix result = distance_matrix_cch(NbNodes, rank, first_out, adj_head, adj_arc,
+                                                    elimination_tree_parent, forward, backward, dep, arr);
   check_nas_mat(result);
   return result;
 }
@@ -648,18 +651,21 @@ Rcpp::List cpptrafficcch(std::vector<int> &gfrom, std::vector<int> &gto, std::ve
 
   CCHPrepared prepared;
   prepared.nbnode = nb;
-  prepared.rank = rank;
-  prepared.tail = tail;
-  prepared.head = head;
-  prepared.first_out = first_out;
-  prepared.adj_head = adj_head;
-  prepared.adj_arc = adj_arc;
-  prepared.rank_first_out = rank_first_out;
-  prepared.rank_adj_head = rank_adj_head;
-  prepared.rank_adj_arc = rank_adj_arc;
-  prepared.input_arc = input_arc;
-  prepared.input_forward = input_forward;
-  prepared.elimination_tree_parent = elimination_tree_parent;
+  // Rcpp has already materialized these arguments as native vectors. Move
+  // them into the prepared topology instead of copying every large array a
+  // second time before assignment starts.
+  prepared.rank = std::move(rank);
+  prepared.tail = std::move(tail);
+  prepared.head = std::move(head);
+  prepared.first_out = std::move(first_out);
+  prepared.adj_head = std::move(adj_head);
+  prepared.adj_arc = std::move(adj_arc);
+  prepared.rank_first_out = std::move(rank_first_out);
+  prepared.rank_adj_head = std::move(rank_adj_head);
+  prepared.rank_adj_arc = std::move(rank_adj_arc);
+  prepared.input_arc = std::move(input_arc);
+  prepared.input_forward = std::move(input_forward);
+  prepared.elimination_tree_parent = std::move(elimination_tree_parent);
 
   network.assign_traffic(method, max_gap, max_it, dep, arr, dem, 7, false, false, verbose, &prepared);
 

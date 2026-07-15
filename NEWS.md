@@ -1,5 +1,18 @@
-cppRouting v3.2.1
-=================
+cppRoutingCCH 3.3.0
+===================
+
+- Extend `get_path_values_pair()` to contracted CH graphs.
+- Preserve positional compatibility in `assign_traffic()` while adding the
+  optional prepared-CCH argument.
+- Replace the CCH distance-matrix implementation with pinned
+  elimination-tree queries, avoiding a destination-by-node distance table.
+- Reduce temporary memory used by CCH endpoint grouping and prepared-topology
+  transfer to native code.
+- Harden source-package exclusions and update the package documentation for
+  the Mobility R-universe.
+
+cppRoutingCCH 3.2.1
+===================
 
 - Mobility fork release with customizable contraction hierarchy (CCH)
   preparation and customization.

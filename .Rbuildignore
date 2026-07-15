@@ -7,3 +7,11 @@
 ^\.git$
 ^\.gitignore$
 ^benchmarks$
+^AGENTS\.md$
+^\.agents$
+^\.codex$
+^inputs$
+^src/.*\.(o|so|dll)$
+^.*\.Rcheck$
+^.*\.tar\.gz$
+^build$
